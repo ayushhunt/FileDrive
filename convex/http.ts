@@ -32,8 +32,10 @@ http.route({
             {console.log("5")}
           await ctx.runMutation(internal.users.addOrgIdToUser, {
             tokenIdentifier: `https://star-bluegill-64.clerk.accounts.dev|${result.data.public_user_data.user_id}`,
+         
             orgId: result.data.organization.id,
           });
+          
           break;
       }
 
