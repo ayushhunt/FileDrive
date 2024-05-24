@@ -27,7 +27,15 @@ export const createFile = mutation({
       throw new ConvexError("you must be logged in to upload a file");
     }
 
-  
+    const hasAccess = await hasAccessToOrg(
+      ctx,
+      identity.tokenIdentifier,
+      args.orgId
+    );
+
+    if (!hasAccess) {
+      throw new ConvexError("you do not have access to this org");
+    }
 
     await ctx.db.insert("files", {
       name: args.name,
@@ -47,7 +55,15 @@ export const getFiles = query({
       return [];
     }
 
-    
+    const hasAccess = await hasAccessToOrg(
+      ctx,
+      identity.tokenIdentifier,
+      args.orgId
+    );
+
+    if (!hasAccess) {
+      return [];
+    }
 
     return ctx.db
       .query("files")
